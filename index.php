@@ -20,9 +20,11 @@
 		<p id="subtext">
 			<?php
 				if(array_key_exists("targMac", $_POST)) {
-					if ($_POST["targMac"] !== "") {
-						$macAddr = $_POST["targMac"];
-						print(shell_exec("wakeonlan {$macAddr}"));
+					$macAddr = filter_var(trim($_POST["targMac"]), FILTER_VALIDATE_MAC);
+					if ($macAddr == true) {
+						print(htmlspecialchars( shell_exec("wakeonlan {$macAddr}") ));
+					} else {
+						print("Invalid MAC Address.");
 					}
 				}
 			?>
